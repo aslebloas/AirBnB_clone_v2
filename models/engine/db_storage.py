@@ -5,6 +5,7 @@ Module for DB storage
 import os
 from models.base_model import Base
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 class DBStorage():
@@ -27,3 +28,19 @@ class DBStorage():
         if (os.getenv('HBNB_ENV') == 'test'):
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
+
+        self.__session = sessionmaker(bind=engine)()
+
+    def all(self, cls=None):
+        """query the current db for all objects
+           Args:
+               cls: Class name of the object to be queried
+        """
+        if cls == None:
+            results = self.__session.query(
+                User, State, City, Amenity, Place, Review).all()
+        else:
+            results = self.__session.query(cls).all()
+        # TODO: this method must return a dictionary
+        return dict(results)
+
