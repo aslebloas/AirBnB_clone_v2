@@ -88,6 +88,14 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("all User")
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name="Hunt"')
+            iden = f.getvalue()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = f.getvalue()
+            obj = Place(inf)
+            self.assertEqual("Hunt", obj.name)
 
     def test_show(self):
         """Test show command inpout"""
