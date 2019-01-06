@@ -54,3 +54,10 @@ class DBStorage():
     def save(self):
         """Commit all changes to the db session"""
         self.__session.commit()
+
+    def delete(self, obj=None):
+        """Delete obj from the db session
+        Args:
+            obj: obj to be deleted, None by default
+        """
+        self.__session.delete(obj)
