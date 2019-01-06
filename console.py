@@ -38,28 +38,27 @@ class HBNBCommand(cmd.Cmd):
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
         """
-try:
+        try:
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            if my_list[0] not in self.all_classes:
-                raise NameError()
-            if len(my_list) < 2:
-                raise IndexError()
-            objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
-            if key in objects:
-                print(objects[key])
-            else:
-                raise KeyError()
+            obj = eval("{}()".format(my_list[0]))
+            """obj.save()"""
+            for i in range(len(my_list)):
+                if i > 0:
+                    param = my_list[i].split('=')
+                    if '"' in param[1]:
+                        setattr(obj, param[0], str(param[1][1:-1]))
+                    elif '.' in param[1]:
+                        setattr(obj, param[0], float(param[1]))
+                    else:
+                        setattr(obj, param[0], int(param[1]))
+            obj.save()
+            print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        except IndexError:
-            print("** instance id missing **")
-        except KeyError:
-            print("** no instance found **")
 
 
     def do_show(self, line):
