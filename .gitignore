@@ -1,0 +1,6 @@
+# ignoring temporaray files
+*~
+#*
+__pycache__/
+*.json
+*.pyc
