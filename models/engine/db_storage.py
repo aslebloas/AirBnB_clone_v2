@@ -50,3 +50,7 @@ class DBStorage():
                 obj: object to be added
         """
         self.__session.add(obj)
+
+    def save(self):
+        """Commit all changes to the db session"""
+        self.__session.commit()
