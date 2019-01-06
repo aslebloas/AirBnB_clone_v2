@@ -4,6 +4,12 @@ Module for DB storage
 """
 import os
 from models.base_model import Base
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -27,9 +33,6 @@ class DBStorage():
             pool_pre_ping=True)
         if (os.getenv('HBNB_ENV') == 'test'):
             Base.metadata.drop_all(self.__engine)
-        Base.metadata.create_all(self.__engine)
-
-        self.__session = sessionmaker(bind=engine)()
 
     def all(self, cls=None):
         """query the current db for all objects
@@ -61,3 +64,9 @@ class DBStorage():
             obj: obj to be deleted, None by default
         """
         self.__session.delete(obj)
+
+    def reload(self):
+        """Create all tables in db and create the db session"""
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=engine, expire_on_commit=False)
+        self.__session = scoped_session(session_factory)
