@@ -44,3 +44,9 @@ class DBStorage():
         # TODO: this method must return a dictionary
         return dict(results)
 
+    def new(self, obj):
+        """Add new object to the current db session
+            Args:
+                obj: object to be added
+        """
+        self.__session.add(obj)
