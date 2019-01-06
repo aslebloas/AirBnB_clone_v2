@@ -11,14 +11,16 @@ class State(BaseModel, Base):
         name: input name
         cities: reference to the City objects related to State
     """
-    self.name = ""
-    self.cities = ""
+    name = ""
+    cities = ""
 
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
     # For DBStorage
-    cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    cities = relationship("City",
+                          backref="state",
+                          cascade="all, delete, delete-orphan")
 
     # For FileStorage
     @property
