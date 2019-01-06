@@ -75,5 +75,5 @@ class BaseModel:
     def delete(self):
         """Delete the current instance from storage"""
         # TODO: when the delete function is implemented, uncomment:
-        # storage.delete()
+        # models.storage.delete()
         pass
