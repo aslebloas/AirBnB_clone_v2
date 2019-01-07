@@ -39,12 +39,11 @@ class FileStorage:
             for key in self.__objects:
                 st = key.split('.')
 
-                if st[0] == cls.__name__:
+                if st[0] == cls:
                     dic = self.__objects[key]
                     ret_lst[key] = dic
 
             return ret_lst
-
 
     def new(self, obj):
         """sets __object to given obj
