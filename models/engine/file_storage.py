@@ -42,7 +42,9 @@ class FileStorage:
                 if st[0] == cls.__name__:
                     dic = self.__objects[key]
                     ret_lst[key] = dic
+
             return ret_lst
+
 
     def new(self, obj):
         """sets __object to given obj
