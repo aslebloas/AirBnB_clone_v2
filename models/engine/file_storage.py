@@ -38,8 +38,12 @@ class FileStorage:
             mydict = {}
             for k, v in self.__objects.copy().items():
                 key = k
-                if key.split('.')[0] == cls.__name__:
-                    mydict[k] = v
+                if type(cls) == str:
+                    if key.split('.')[0] == cls:
+                        mydict[k] = v
+                else:
+                    if key.split('.')[0] == cls.__name__:
+                        mydict[k] = v
             return mydict
 
     def new(self, obj):
