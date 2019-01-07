@@ -57,8 +57,8 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
-        models.storage.new(self)
-        models.storage.save()
+        models.storage.new(self)  # Add to session
+        models.storage.save()  # Commit
 
     def to_dict(self):
         """creates dictionary of the class  and returns
