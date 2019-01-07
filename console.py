@@ -38,6 +38,7 @@ class HBNBCommand(cmd.Cmd):
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
         """
+
         try:
             if not line:
                 raise SyntaxError()
@@ -59,7 +60,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-
 
     def do_show(self, line):
         """Prints the string representation of an instance
