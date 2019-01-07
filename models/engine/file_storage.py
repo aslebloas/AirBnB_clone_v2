@@ -35,16 +35,12 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
-            ret_lst = {}
-            for key in self.__objects:
-                st = key.split('.')
-
-                if st[0] == cls.__name__:
-                    dic = self.__objects[key]
-                    ret_lst[key] = dic
-
-            return ret_lst
-
+            mydict = {}
+            for k, v in self.__objects.copy().items():
+                key = k
+                if key.split('.')[0] == cls.__name__:
+                    mydict[k] = v
+            return mydict
 
     def new(self, obj):
         """sets __object to given obj

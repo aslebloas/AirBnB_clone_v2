@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This is the base model class for AirBnB"""
+import os
 import uuid
 import models
 from datetime import datetime
@@ -46,7 +47,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
@@ -57,8 +58,14 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
-        models.storage.new(self)  # Add to session
-        models.storage.save()  # Commit
+        """If storage is a DBStorage instance, add object to session
+           If storage is a FileStorage instance, add object to __objects
+        """
+        models.storage.new(self)
+        """If storage is a DBStorage instance, commit changes to db
+           If storage is a FileStorage instance, add dict representation to file
+        """
+        models.storage.save()
 
     def to_dict(self):
         """creates dictionary of the class  and returns
@@ -69,7 +76,8 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        my_dict.pop('_sa_instance_state', None)
+        if '_sa_instance_state' in my_dict.keys():
+            del my_dict['_sa_instance_state']
         return my_dict
 
     def delete(self):
