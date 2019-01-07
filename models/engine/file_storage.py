@@ -38,14 +38,20 @@ class FileStorage:
             ret_lst = {}
             for key in self.__objects:
                 st = key.split('.')
+
                 if st[0] == cls.__name__:
                     dic = self.__objects[key]
+                    print(type(dic))
                     ret_lst[key] = dic
                     #ret_lst[key] = eval("{}({})".format(cls,
                      #                                   dic[2]))
-            print("TTTTTTTTTTTTTEEEEEEEEEEESSSSSSSSSSSSSSSTTTTTTTTTTTTTt")
-            print(type(dic))
-            return ret_lst
+            try:
+                print(type(dic))
+                print(dic)
+            except:
+                print()
+            print(ret_lst)
+            return None
 
     def new(self, obj):
         """sets __object to given obj
