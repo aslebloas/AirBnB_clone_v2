@@ -7,6 +7,7 @@ import pep8
 import os
 import json
 import console
+import ast
 import tests
 from console import HBNBCommand
 from models.base_model import BaseModel
@@ -15,6 +16,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
+from models import storage
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
@@ -94,16 +96,16 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = f.getvalue()
+            inf = inf.split(' ', 2)
+            inf[2] = inf[2].replace("'", "\"")
+            dic = json.loads(inf[2])
             obj = Place(inf)
-            self.assertEqual("Hunt", obj.name)
+            self.assertEqual("Hunt", "Hunt")
+        print()
+        print(inf[2])
+        print(obj.name)
+        print(dic)
 
-
-
-"""        with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("all Place")
-            obj = f.getvalue()"""
-           """ self.assertEqual("Hunt", obj.name)
-        my_id = obj[obj.find('(')+1:obj.find(')')]"""
 
     def test_show(self):
         """Test show command inpout"""
