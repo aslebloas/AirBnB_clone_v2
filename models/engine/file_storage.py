@@ -44,7 +44,7 @@ class FileStorage:
                     #ret_lst[key] = eval("{}({})".format(cls,
                      #                                   dic[2]))
             print("TTTTTTTTTTTTTEEEEEEEEEEESSSSSSSSSSSSSSSTTTTTTTTTTTTTt")
-
+            print(type(dic))
             return ret_lst
 
     def new(self, obj):
