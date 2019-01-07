@@ -11,7 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage():
@@ -43,9 +43,14 @@ class DBStorage():
             results = self.__session.query(
                 User, State, City, Amenity, Place, Review).all()
         else:
-            results = self.__session.query(cls).all()
-        # TODO: this method must return a dictionary
-        return dict(results)
+            results = self.__session.query(eval("{}".format(cls))).all()
+
+        dictionary = {}
+        for element in results:
+            ele_class = element.to_dict()['__class__']
+            key = ele_class + '.' + str(element.id)
+            dictionary[key] = element
+        return dictionary
 
     def new(self, obj):
         """Add new object to the current db session
@@ -68,5 +73,6 @@ class DBStorage():
     def reload(self):
         """Create all tables in db and create the db session"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         self.__session = scoped_session(session_factory)
