@@ -43,8 +43,10 @@ class FileStorage:
                     dic = self.__objects[key]
                     print(type(dic))
                     ret_lst[key] = dic
-                    #ret_lst[key] = eval("{}({})".format(cls,
-                     #                                   dic[2]))
+                    """
+                    ret_lst[key] = eval("{}({})".format(cls,
+                                                       dic[2]))
+                    """
             try:
                 print(type(dic))
                 print(dic)
