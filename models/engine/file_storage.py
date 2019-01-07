@@ -39,8 +39,12 @@ class FileStorage:
             for key in self.__objects:
                 st = key.split('.')
                 if st[0] == cls.__name__:
-                    ret_lst[key] = eval("{}({})".format(cls,
-                                                        self.__objects[key]))
+                    dic = self.__objects[key]
+                    ret_lst[key] = dic
+                    #ret_lst[key] = eval("{}({})".format(cls,
+                     #                                   dic[2]))
+            print("TTTTTTTTTTTTTEEEEEEEEEEESSSSSSSSSSSSSSSTTTTTTTTTTTTTt")
+
             return ret_lst
 
     def new(self, obj):
