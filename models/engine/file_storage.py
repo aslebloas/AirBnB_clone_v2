@@ -41,17 +41,8 @@ class FileStorage:
 
                 if st[0] == cls.__name__:
                     dic = self.__objects[key]
-                    print(type(dic))
                     ret_lst[key] = dic
-                    #ret_lst[key] = eval("{}({})".format(cls,
-                     #                                   dic[2]))
-            try:
-                print(type(dic))
-                print(dic)
-            except:
-                print()
-            print(ret_lst)
-            return None
+            return ret_lst
 
     def new(self, obj):
         """sets __object to given obj
