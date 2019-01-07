@@ -11,9 +11,6 @@ class City(BaseModel, Base):
         state_id: The state id
         name: input name
     """
-    name = ""
-    state_id = ""
-
     __tablename__ = 'cities'
 
     name = Column(String(128), nullable=False)

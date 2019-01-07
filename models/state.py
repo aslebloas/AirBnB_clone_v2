@@ -12,9 +12,6 @@ class State(BaseModel, Base):
         name: input name
         cities: reference to the City objects related to State
     """
-    name = ""
-    cities = ""
-
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
