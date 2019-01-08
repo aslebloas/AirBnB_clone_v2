@@ -60,8 +60,8 @@ class BaseModel:
            If storage is a FileStorage instance, add object to __objects
         """
         models.storage.new(self)
-        """If storage is a DBStorage instance, commit changes to db
-           If storage is a FileStorage instance, add dict representation to file
+        """If storage a DBStorage instance, commit changes to db
+           If storage a FileStorage instance, add dict representation to file
         """
         models.storage.save()
 
