@@ -5,7 +5,6 @@ from models.city import City
 from models.user import User
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
-from models import storage
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -52,12 +51,4 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            reviews = relationship("Review", backref="place",
-                           cascade="all, delete, delete-orphan")
-        else:
-            reviews = []
-            for k, v storage.all().items():
-                if v['place_id'] == self.id:
-                    reviews.append(v)
         return reviews
