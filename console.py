@@ -46,19 +46,17 @@ class HBNBCommand(cmd.Cmd):
             i = 1
 
             while i <= len(my_list):
-                try:
-                    param = my_list[i].split('=')
-                    if param[1][0] == '"':
-                        while param[1][-1:] != '"':
-                            i += 1
-                            param[1] += ' ' + my_list[i]
-                        setattr(obj, param[0], str(param[1][1:-1]))
-                    elif '.' in param[1]:
-                        setattr(obj, param[0], float(param[1]))
-                    else:
-                        setattr(obj, param[0], int(param[1]))
-                except:
-                    pass
+                param = my_list[i].split('=')
+                if param[1][0] == '"':
+                    while param[1][-1:] != '"':
+                        i += 1
+                        param[1] += ' ' + my_list[i]
+                    setattr(obj, param[0], str(param[1][1:-1]))
+                elif '.' in param[1]:
+                    setattr(obj, param[0], float(param[1]))
+                else:
+                    setattr(obj, param[0], int(param[1]))
+
                 i += 1
             obj.save()
             print("{}".format(obj.id))
