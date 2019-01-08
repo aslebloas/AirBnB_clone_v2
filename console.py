@@ -49,6 +49,9 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     param = my_list[i].split('=')
                     if param[1][0] == '"':
+                        while param[1][-1:] != '"':
+                            i += 1
+                            param[1] += ' ' + my_list[i]
                         setattr(obj, param[0], str(param[1][1:-1]))
                     elif '.' in param[1]:
                         setattr(obj, param[0], float(param[1]))
