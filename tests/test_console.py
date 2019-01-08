@@ -146,7 +146,6 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(13.3, name)
             self.assertEqual(float, type(name))
 
-        """TODO
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=["bla", "bla", "bla"]')
             iden = f.getvalue()
@@ -156,9 +155,10 @@ class TestConsole(unittest.TestCase):
             inf = "Place." + iden
             inf = inf[:-1]
             name = storage._FileStorage__objects[inf].name
-            self.assertEqual('', name)
-            self.assertEqual(str, type(name))
-        """
+            self.assertEqual(None, name)
+            self.assertEqual(None, type(name))
+
+
 
     def test_show(self):
         """Test show command inpout"""
