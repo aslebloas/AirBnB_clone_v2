@@ -39,7 +39,6 @@ class DBStorage():
            Args:
                cls: Class name of the object to be queried
         """
-        print(cls)
         if cls is None:
             results = self.__session.query(
                 State, City).all()
