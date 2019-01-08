@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import models
 
 
 class User(BaseModel, Base):
@@ -26,3 +27,12 @@ class User(BaseModel, Base):
     review = relationship("Review",
                           backref="user",
                           cascade="all, delete, delete-orphan")
+    @property
+    def reviews(self):
+        """getter for reviews of theis placs
+        only for file storage"""
+        lst = []
+        for k, v in models.storage.all(Review).items():
+            if v.user_id == self.id:
+                lst += [v]
+        return lst
