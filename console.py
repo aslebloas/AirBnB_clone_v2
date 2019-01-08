@@ -34,6 +34,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """Creates a new instance of BaseModel, saves it
+           line is the line put into command prompt
+           One can put arguments into the comand prompt
+               for instance create BaseModel num=3 adds
+               num making it equal to three
         Exceptions:
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
