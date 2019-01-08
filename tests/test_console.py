@@ -9,6 +9,7 @@ import json
 import console
 import ast
 import tests
+import MySQLdb
 from console import HBNBCommand
 from models.base_model import BaseModel
 from models.user import User
@@ -19,6 +20,19 @@ from models.place import Place
 from models import storage
 from models.review import Review
 from models.engine.file_storage import FileStorage
+
+os.environ['HBNB_MYSQL_USER'] = 'hbnb_test'
+os.environ['HBNB_MYSQL_PWD'] = 'hbnb_test_pwd'
+os.environ['HBNB_MYSQL_HOST'] = 'localhost'
+os.environ['HBNB_MYSQL_DB'] = 'hbnb_test_db'
+os.environ['HBNB_TYPE_STORAGE'] = 'db'
+
+conn = MySQLdb.connect(host=os.getenv('HBNB_MYSQL_HOST'),
+                       user=os.getenv('HBNB_MYSQL_USER'),
+                       passwd=os.getenv('HBNB_MYSQL_PWD'),
+                       db=os.getenv('HBNB_MYSQL_DB'))
+
+cur = conn.cursor()
 
 
 class TestConsole(unittest.TestCase):
@@ -90,9 +104,16 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("all User")
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name="Hunt"')
             iden = f.getvalue()
+            cur.execute("""
+            SELECT name FROM places WHERE id=%s""", (iden,))
+            query_rows = cur.fetchall()
+            for row in query_rows:
+                print("query: {}".format(row))
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -100,9 +121,11 @@ class TestConsole(unittest.TestCase):
             name = storage._FileStorage__objects[inf].name
             self.assertEqual("Hunt", name)
             self.assertEqual(str, type(name))
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=13')
             iden = f.getvalue()
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -110,9 +133,11 @@ class TestConsole(unittest.TestCase):
             name = storage._FileStorage__objects[inf].name
             self.assertEqual(13, name)
             self.assertEqual(int, type(name))
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=13.3')
             iden = f.getvalue()
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -120,11 +145,12 @@ class TestConsole(unittest.TestCase):
             name = storage._FileStorage__objects[inf].name
             self.assertEqual(13.3, name)
             self.assertEqual(float, type(name))
-        """
-        TODO
+
+        """TODO
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=["bla", "bla", "bla"]')
             iden = f.getvalue()
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
