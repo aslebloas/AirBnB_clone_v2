@@ -99,6 +99,37 @@ class TestConsole(unittest.TestCase):
             inf = inf[:-1]
             name = storage._FileStorage__objects[inf].name
             self.assertEqual("Hunt", name)
+            self.assertEqual(str, type(name))
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name=13')
+            iden = f.getvalue()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = "Place." + iden
+            inf = inf[:-1]
+            name = storage._FileStorage__objects[inf].name
+            self.assertEqual(13, name)
+            self.assertEqual(int, type(name))
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name=13.3')
+            iden = f.getvalue()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = "Place." + iden
+            inf = inf[:-1]
+            name = storage._FileStorage__objects[inf].name
+            self.assertEqual(13.3, name)
+            self.assertEqual(float, type(name))
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name=["bla", "bla", "bla"]')
+            iden = f.getvalue()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = "Place." + iden
+            inf = inf[:-1]
+            name = storage._FileStorage__objects[inf].name
+            self.assertEqual('', name)
+            self.assertEqual(str, type(name))
 
     def test_show(self):
         """Test show command inpout"""
