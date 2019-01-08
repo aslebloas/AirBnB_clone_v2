@@ -5,7 +5,7 @@ from models.city import City
 from models.user import User
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
-from models import storage
+import models
 
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         """getter for reviews of theis placs
         only for file storage"""
         lst = []
-        for k, v in storage.all(Review).items():
+        for k, v in models.storage.all(Review).items():
             if v.place_id == self.id:
                 lst += [v]
         return lst
