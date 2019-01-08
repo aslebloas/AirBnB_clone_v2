@@ -156,7 +156,30 @@ class TestConsole(unittest.TestCase):
             inf = inf[:-1]
             name = storage._FileStorage__objects[inf].name
             self.assertEqual(None, name)
-            self.assertEqual(None, type(name))
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name="bla_bla"')
+            iden = f.getvalue()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = "Place." + iden
+            inf = inf[:-1]
+            name = storage._FileStorage__objects[inf].name
+            self.assertEqual(name, "bla bla")
+            self.assertEqual(str, type(name))
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('create Place name="bla bla"')
+            iden = f.getvalue()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show Place " + iden)
+            inf = "Place." + iden
+            inf = inf[:-1]
+            name = storage._FileStorage__objects[inf].name
+            self.assertEqual(name, "bla bla")
+            self.assertEqual(str, type(name))
 
 
 
