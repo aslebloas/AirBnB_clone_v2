@@ -22,3 +22,7 @@ class User(BaseModel, Base):
     places = relationship("Place",
                           backref="user",
                           cascade="all, delete, delete-orphan")
+
+    review = relationship("Review",
+                          backref="user",
+                          cascade="all, delete, delete-orphan")

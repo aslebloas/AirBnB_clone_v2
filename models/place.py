@@ -46,3 +46,5 @@ class Place(BaseModel, Base):
                              viewonly=True, backref='place_amenities')
 
     # For FileStorage
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete, delete-orphan")
