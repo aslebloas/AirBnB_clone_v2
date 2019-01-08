@@ -89,7 +89,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual('', f.getvalue())
 
     def test_create(self):
-        """Test create command inpout"""
+        """Test create command inpout and all features"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("create")
             self.assertEqual(
@@ -125,7 +125,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=13')
             iden = f.getvalue()
-
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -137,7 +136,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=13.3')
             iden = f.getvalue()
-
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -149,7 +147,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name=["bla", "bla", "bla"]')
             iden = f.getvalue()
-
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -160,7 +157,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name="bla_bla"')
             iden = f.getvalue()
-
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
@@ -172,7 +168,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create Place name="bla bla"')
             iden = f.getvalue()
-
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show Place " + iden)
             inf = "Place." + iden
