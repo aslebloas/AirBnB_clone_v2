@@ -19,7 +19,6 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
 
-    if os.getenv('HBNB_TYPE_STORAGE') = 'db':
-        places = relationship("Place",
-                              backref="user",
-                              cascade="all, delete, delete-orphan")
+    places = relationship("Place",
+                          backref="user",
+                          cascade="all, delete, delete-orphan")
