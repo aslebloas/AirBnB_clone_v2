@@ -15,7 +15,7 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(String(60), primary_key=True)
+    id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -45,7 +45,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.to_dict())
+            type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
@@ -60,8 +60,8 @@ class BaseModel:
            If storage is a FileStorage instance, add object to __objects
         """
         models.storage.new(self)
-        """If storage is a DBStorage instance, commit changes to db
-           If storage is a FileStorage instance, add dict representation to file
+        """If storage a DBStorage instance, commit changes to db
+           If storage a FileStorage instance, add dict representation to file
         """
         models.storage.save()
 

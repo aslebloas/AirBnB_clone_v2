@@ -32,7 +32,7 @@ class DBStorage():
             'mysql+mysqldb://{}:{}@{}/{}'.format(usr, pwd, host, db),
             pool_pre_ping=True)
         if (os.getenv('HBNB_ENV') == 'test'):
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """query the current db for all objects

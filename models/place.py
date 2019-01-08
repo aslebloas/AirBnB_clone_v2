@@ -3,7 +3,13 @@
 from models.base_model import BaseModel, Base
 from models.city import City
 from models.user import User
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
+from sqlalchemy.orm import relationship
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id')),
+                      Column('amenity_id', String(60), ForeignKey('amenities.id')))
 
 
 class Place(BaseModel, Base):
@@ -23,8 +29,8 @@ class Place(BaseModel, Base):
     """
     __tablename__ = 'places'
 
-    city_id = Column(String(60), ForeignKey('cities.id'))
-    user_id = Column(String(60), ForeignKey('users.id'))
+    city_id = Column(String(60), ForeignKey('cities.id', ondelete="CASCADE"))
+    user_id = Column(String(60), ForeignKey('users.id', ondelete="CASCADE"))
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
     number_rooms = Column(Integer, nullable=False, default=0)
@@ -33,3 +39,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
+
+    # For DBStorage
+    amenities = relationship("Amenity", secondary='place_amenity',
+                             viewonly=True, backref='place_amenities')
+
+    # For FileStorage
