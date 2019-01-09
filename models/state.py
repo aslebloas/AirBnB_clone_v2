@@ -23,11 +23,3 @@ class State(BaseModel, Base):
                           cascade="all, delete, delete-orphan")
 
     # For FileStorage
-    @property
-    def cities(self):
-        """Getter for cities attr"""
-        lst = []
-        for k, v in models.storage.all(City).items():
-                if v.state_id == self.id:
-                    lst += [v]
-        return lst
