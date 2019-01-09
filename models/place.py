@@ -53,9 +53,25 @@ class Place(BaseModel, Base):
     @property
     def reviews(self):
         """getter for reviews of theis placs
-        only for file storage"""
-        lst = []
-        for k, v in models.storage.all(Review).items():
-            if v.place_id == self.id:
-                lst += [v]
-        return lst
+           only for file storage"""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            return self.reviews
+        else:
+            lst = []
+            for k, v in models.storage.all(Review).items():
+                if v.place_id == self.id:
+                    lst += [v]
+            return lst
+
+    @property
+    def amenities(self):
+        """getter for amenities of theis placs
+           only for file storage"""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            return self.amenities
+        else:
+            lst = []
+            for k, v in models.storage.all(Amenity).items():
+                if v.place_id == self.id:
+                    lst += [v]
+            return lst
