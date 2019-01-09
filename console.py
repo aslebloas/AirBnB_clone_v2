@@ -65,8 +65,11 @@ class HBNBCommand(cmd.Cmd):
                 except:
                     pass
                 i += 1
-            obj.save()
-            print("{}".format(obj.id))
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db' and obj.name == None:
+                raise SyntaxError()
+            else:
+                obj.save()
+                print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
         except NameError:
