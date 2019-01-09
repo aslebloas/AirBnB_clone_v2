@@ -27,29 +27,3 @@ class User(BaseModel, Base):
     reviews = relationship("Review",
                           backref="user",
                           cascade="all, delete, delete-orphan")
-
-    @property
-    def reviews(self):
-        """getter for reviews of theis user
-           only for file storage"""
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            return self.reviews
-        else:
-            lst = []
-            for k, v in models.storage.all(Review).items():
-                if v.user_id == self.id:
-                    lst += [v]
-            return lst
-
-    @property
-    def places(self):
-        """getter for places of theis user
-           only for file storage"""
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            return self.places
-        else:
-            lst = []
-            for k, v in models.storage.all(Place).items():
-                if v.user_id == self.id:
-                    lst += [v]
-            return lst

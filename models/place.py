@@ -43,11 +43,11 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
 
     # For DBStorage
-    amenities = relationship("Amenity", secondary='place_amenity',
+    __amenities = relationship("Amenity", secondary='place_amenity',
                              viewonly=True, backref='place_amenities')
 
     # For FileStorage
-    reviews = relationship("Review", backref="place",
+    __reviews = relationship("Review", backref="place",
                            cascade="all, delete, delete-orphan")
 
     @property
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         """getter for reviews of theis placs
            only for file storage"""
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            return self.reviews
+            return self.__reviews
         else:
             lst = []
             for k, v in models.storage.all(Review).items():
@@ -68,7 +68,7 @@ class Place(BaseModel, Base):
         """getter for amenities of theis placs
            only for file storage"""
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            return self.amenities
+            return self.__amenities
         else:
             lst = []
             for k, v in models.storage.all(Amenity).items():
