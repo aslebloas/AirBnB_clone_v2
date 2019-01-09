@@ -41,7 +41,7 @@ class DBStorage():
         """
         if cls is None:
             results = self.__session.query(
-                State, City).all()
+                State, City, User, Review, Place, Amenity).all()
         else:
             results = self.__session.query(eval("{}".format(cls))).all()
 
