@@ -27,6 +27,7 @@ class User(BaseModel, Base):
     review = relationship("Review",
                           backref="user",
                           cascade="all, delete, delete-orphan")
+
     @property
     def reviews(self):
         """getter for reviews of theis placs
