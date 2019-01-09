@@ -19,7 +19,15 @@ class State(BaseModel, Base):
 
     # For DBStorage
     cities = relationship("City",
-                          backref="state",
-                          cascade="all, delete, delete-orphan")
+                          cascade="all, delete", backref="state")
 
     # For FileStorage
+    @property
+    def amenities(self):
+        """getter for amenities of theis placs
+           only for file storage"""
+        lst = []
+        for k, v in models.storage.all(models.City).items():
+            if v.place_id == self.id:
+                lst += [v]
+        return lst

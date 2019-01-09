@@ -4,7 +4,7 @@ import os
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import DateTime
 
@@ -15,9 +15,9 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -38,6 +38,13 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
+        if not self.id:
+            self.id = str(uuid.uuid4())
+        date = datetime.now()
+        if not self.created_at:
+            self.created_at = self.updated_at = date
+        if not self.updated_at:
+            self.updated_at = date
 
     def __str__(self):
         """returns a string
@@ -80,4 +87,4 @@ class BaseModel:
 
     def delete(self):
         """Delete the current instance from storage"""
-        models.storage.delete()
+        models.storage.delete(self)

@@ -40,7 +40,7 @@ class DBStorage():
                cls: Class name of the object to be queried
         """
         if cls is None:
-            classes = ['User', 'State', 'City', 'Place', 'Amenity', 'Review']
+            classes = ['State', 'City', 'Place', 'Amenity', 'User', 'Review']
 
             results = []
             for cls in classes:
@@ -80,5 +80,5 @@ class DBStorage():
         """Create all tables in db and create the db session"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
+                                       expire_on_commit=True)
         self.__session = scoped_session(session_factory)
