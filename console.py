@@ -17,8 +17,9 @@ from shlex import split
 class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
-    all_classes = ["BaseModel", "User", "State", "City",
-                   "Amenity", "Place", "Review"]
+    prompt = "(hbnb) "
+    all_classes = {"BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"}
 
     def emptyline(self):
         """Ignores empty spaces"""
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             return
         my_list = line.split(" ")
         all_classes = ["BaseModel", "User", "State", "City",
-                   "Amenity", "Place", "Review"]
+                       "Amenity", "Place", "Review"]
         if my_list[0] not in all_classes:
             print("** class doesn't exist **")
             return
@@ -70,11 +71,13 @@ class HBNBCommand(cmd.Cmd):
             except:
                 pass
             i += 1
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db' and obj.name == None:
-            raise SyntaxError()
-        else:
-            obj.save()
-            print("{}".format(obj.id))
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            if not (isinstance(obj, User) or isinstance(obj, Review)):
+                if obj.name is None:
+                    raise AttributeError("** attribute name missing **")
+
+        obj.save()
+        print("{}".format(obj.id))
 
     def do_show(self, line):
         """Prints the string representation of an instance
@@ -174,41 +177,32 @@ class HBNBCommand(cmd.Cmd):
             AttributeError: when there is no attribute given
             ValueError: when there is no value given
         """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = split(line, " ")
-            if my_list[0] not in self.all_classes:
-                raise NameError()
-            if len(my_list) < 2:
-                raise IndexError()
-            objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
-            if key not in objects:
-                raise KeyError()
-            if len(my_list) < 3:
-                raise AttributeError()
-            if len(my_list) < 4:
-                raise ValueError()
-            v = objects[key]
-            try:
-                v.__dict__[my_list[2]] = eval(my_list[3])
-            except Exception:
-                v.__dict__[my_list[2]] = my_list[3]
-                v.save()
+        if not line:
+            raise SyntaxError("** class name missing **")
 
-        except SyntaxError:
-            print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
-        except IndexError:
-            print("** instance id missing **")
-        except KeyError:
-            print("** no instance found **")
-        except AttributeError:
-            print("** attribute name missing **")
-        except ValueError:
-            print("** value missing **")
+        my_list = split(line, " ")
+        all_classes = ["BaseModel", "User", "State", "City",
+                       "Amenity", "Place", "Review"]
+        if my_list[0] not in all_classes:
+            raise NameError("** class doesn't exist **")
+
+        if len(my_list) < 2:
+            raise IndexError("** instance id missing **")
+
+        objects = storage.all()
+        key = my_list[0] + '.' + my_list[1]
+        if key not in objects:
+            raise KeyError("** no instance found **")
+        if len(my_list) < 3:
+            raise AttributeError("** attribute name missing **")
+        if len(my_list) < 4:
+            raise ValueError("** value missing **")
+        v = objects[key]
+        try:
+            v.__dict__[my_list[2]] = eval(my_list[3])
+        except Exception:
+            v.__dict__[my_list[2]] = my_list[3]
+            v.save()
 
     def count(self, line):
         """count the number of instances of a class
@@ -273,11 +267,9 @@ class HBNBCommand(cmd.Cmd):
                         self.do_update(key + ' "{}" "{}"'.format(k, v))
                 else:
                     self.do_update(args)
+
         else:
             cmd.Cmd.default(self, line)
 
-
 if __name__ == '__main__':
-    prompt = HBNBCommand()
-    prompt.prompt = '(hbnb) '
-    prompt.cmdloop('')
+    HBNBCommand().cmdloop()
