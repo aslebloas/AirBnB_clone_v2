@@ -28,7 +28,7 @@ class State(BaseModel, Base):
         """Getter for cities attr"""
         lst = []
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            return self.cities
+            return self.__cities
         else:
             for k, v in models.storage.all(City).items():
                 if v.state_id == self.id:
