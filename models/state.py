@@ -30,4 +30,4 @@ class State(BaseModel, Base):
         for k, v in models.storage.all(City).items():
                 if v.state_id == self.id:
                     lst += [v]
-            return lst
+        return lst
