@@ -40,8 +40,14 @@ class DBStorage():
                cls: Class name of the object to be queried
         """
         if cls is None:
-            results = self.__session.query(
-                State, City, User, Review, Place, Amenity).all()
+            classes = ['User', 'State', 'City', 'Place', 'Amenity', 'Review']
+
+            results = []
+            for cls in classes:
+                query_rows = self.__session.query(eval("{}".format(cls))).all()
+                for element in query_rows:
+                    results.append(element)
+
         else:
             results = self.__session.query(eval("{}".format(cls))).all()
 
