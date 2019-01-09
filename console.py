@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
+import os
 from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
@@ -16,9 +17,8 @@ from shlex import split
 class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
-    prompt = "(hbnb) "
-    all_classes = {"BaseModel", "User", "State", "City",
-                   "Amenity", "Place", "Review"}
+    all_classes = ["BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"]
 
     def emptyline(self):
         """Ignores empty spaces"""
@@ -42,38 +42,39 @@ class HBNBCommand(cmd.Cmd):
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
         """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            i = 0
-            while i <= len(my_list):
-                try:
-                    if i > 0:
-                        param = my_list[i].split('=')
-                        if param[1][0] == '"':
-                            while param[1][-1:] != '"':
-                                i += 1
-                                param[1] += ' ' + my_list[i]
-                            param[1] = param[1].replace('_', ' ')
-                            setattr(obj, param[0], str(param[1][1:-1]))
-                        elif '.' in param[1]:
-                            setattr(obj, param[0], float(param[1]))
-                        else:
-                            setattr(obj, param[0], int(param[1]))
-                except:
-                    pass
-                i += 1
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db' and obj.name == None:
-                raise SyntaxError()
-            else:
-                obj.save()
-                print("{}".format(obj.id))
-        except SyntaxError:
+        if not line:
             print("** class name missing **")
-        except NameError:
+            return
+        my_list = line.split(" ")
+        all_classes = ["BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"]
+        if my_list[0] not in all_classes:
             print("** class doesn't exist **")
+            return
+        obj = eval("{}()".format(my_list[0]))
+        i = 0
+        while i <= len(my_list):
+            try:
+                if i > 0:
+                    param = my_list[i].split('=')
+                    if param[1][0] == '"':
+                        while param[1][-1:] != '"':
+                            i += 1
+                            param[1] += ' ' + my_list[i]
+                        param[1] = param[1].replace('_', ' ')
+                        setattr(obj, param[0], str(param[1][1:-1]))
+                    elif '.' in param[1]:
+                        setattr(obj, param[0], float(param[1]))
+                    else:
+                        setattr(obj, param[0], int(param[1]))
+            except:
+                pass
+            i += 1
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db' and obj.name == None:
+            raise SyntaxError()
+        else:
+            obj.save()
+            print("{}".format(obj.id))
 
     def do_show(self, line):
         """Prints the string representation of an instance
@@ -277,4 +278,6 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+    prompt = HBNBCommand()
+    prompt.prompt = '(hbnb) '
+    prompt.cmdloop('')
