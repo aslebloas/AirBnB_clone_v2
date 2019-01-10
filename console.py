@@ -53,15 +53,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         obj = eval("{}()".format(my_list[0]))
-        i = 0
-        while i <= len(my_list):
+        for i in range(len(my_list)):
             try:
                 if i > 0:
                     param = my_list[i].split('=')
-                    if param[1][0] == '"':
-                        while param[1][-1:] != '"':
-                            i += 1
-                            param[1] += ' ' + my_list[i]
+                    if param[1][0] == '"' and param[1][-1:] == '"':
                         param[1] = param[1].replace('_', ' ')
                         setattr(obj, param[0], str(param[1][1:-1]))
                     elif '.' in param[1]:
@@ -70,7 +66,6 @@ class HBNBCommand(cmd.Cmd):
                         setattr(obj, param[0], int(param[1]))
             except:
                 pass
-            i += 1
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             if not (isinstance(obj, User) or isinstance(obj, Review)):
                 if obj.name is None:
