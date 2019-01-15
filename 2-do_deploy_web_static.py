@@ -30,32 +30,36 @@ def do_deploy(archive_path):
     if not os.path.exists(archive_path):
         return False
 
-    # Upload the archive to the /tmp/ directory of the web server
-    put(archive_path, '/tmp/')
+    try:
+        # Upload the archive to the /tmp/ directory of the web server
+        put(archive_path, '/tmp/')
 
-    # Uncompress the archive to a folder
-    filename = archive_path.split('/')
-    length = len(filename)
-    filename = filename[length - 1].split('.')[0]
+        # Uncompress the archive to a folder
+        filename = archive_path.split('/')
+        length = len(filename)
+        filename = filename[length - 1].split('.')[0]
 
-    dest = "/data/web_static/releases/" + filename
+        dest = "/data/web_static/releases/" + filename
 
-    sudo("mkdir -p {}/".format(dest))
-    sudo("tar -xzf /tmp/{}.tgz -C {}/".format(filename, dest))
+        sudo("mkdir -p {}/".format(dest))
+        sudo("tar -xzf /tmp/{}.tgz -C {}/".format(filename, dest))
 
-    # delete the archive from the server
-    sudo("rm /tmp/{}.tgz".format(filename))
+        # delete the archive from the server
+        sudo("rm /tmp/{}.tgz".format(filename))
 
-    # Move the content of web_static
-    sudo("mv {}/web_static/* {}".format(dest, dest))
+        # Move the content of web_static
+        sudo("mv {}/web_static/* {}".format(dest, dest))
 
-    # Remove the web_static folder
-    sudo("rmdir {}/web_static".format(dest))
+        # Remove the web_static folder
+        sudo("rmdir {}/web_static".format(dest))
 
-    # delete the sym link from the server
-    sudo("rm -rf /data/web_static/current")
+        # delete the sym link from the server
+        sudo("rm -rf /data/web_static/current")
 
-    # create a new sym link
-    sudo("ln -s {} /data/web_static/current".format(dest))
+        # create a new sym link
+        sudo("ln -s {} /data/web_static/current".format(dest))
 
-    return True
+    except:
+        return False
+    finally:
+        return True
