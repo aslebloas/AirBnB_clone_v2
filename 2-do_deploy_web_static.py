@@ -18,6 +18,7 @@ def do_pack():
     now = datetime.now().strftime('%Y%m%d%H%M%S')
     fpath = dpath + "web_static_" + now + ".tgz"
     local("tar -cvzf {}  web_static".format(fpath))
+    return fpath
 
 
 def do_deploy(archive_path):
@@ -49,7 +50,7 @@ def do_deploy(archive_path):
     sudo("mv {}/web_static/* {}".format(dest, dest))
 
     # Remove the web_static folder
-    sudo ("rmdir {}/web_static".format(dest))
+    sudo("rmdir {}/web_static".format(dest))
 
     # delete the sym link from the server
     sudo("rm -rf /data/web_static/current")
