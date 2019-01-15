@@ -19,6 +19,7 @@ def do_pack():
     fpath = dpath + "web_static_" + now + ".tgz"
     local("tar -cvzf {}  web_static".format(fpath))
 
+
 def do_deploy(archive_path):
     """distributes an archive to your web servers
     Args:
@@ -42,3 +43,5 @@ def do_deploy(archive_path):
     sudo("rm /tmp/{}.tgz".format(filename))
     sudo("rm -rf /data/web_static/current")
     sudo("ln -s {} /data/web_static/current".format(dest))
+
+    return True
