@@ -25,10 +25,11 @@ def do_deploy(archive_path):
     Args:
         archive_path: path to archive
     """
+    # Returns False if the file at the path archive_path doesn’t exist
     if not os.path.exists(archive_path):
         return False
 
-    # Upload archive to server tmp directory
+    # Upload the archive to the /tmp/ directory of the web server
     put(archive_path, '/tmp/')
 
     # Uncompress the archive to a folder
@@ -40,8 +41,20 @@ def do_deploy(archive_path):
 
     sudo("mkdir -p {}/".format(dest))
     sudo("tar -xzf /tmp/{}.tgz -C {}/".format(filename, dest))
+
+    # delete the archive from the server
     sudo("rm /tmp/{}.tgz".format(filename))
+
+    # Move the content of web_static
+    sudo("mv {}/web_static/* {}".format(dest, dest))
+
+    # Remove the web_static folder
+    sudo ("rmdir {}/web_static".format(dest))
+
+    # delete the sym link from the server
     sudo("rm -rf /data/web_static/current")
+
+    # create a new sym link
     sudo("ln -s {} /data/web_static/current".format(dest))
 
     return True
