@@ -74,3 +74,8 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
+
+
+    def close(self):
+        """reload the json file"""
+        storage.reload()
