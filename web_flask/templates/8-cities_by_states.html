@@ -11,7 +11,7 @@
 	  <ul>
 	    {% for k, v in cities.items()|sort -%}
 	      {% if v.state_id == value.id %}
-	        <li>City: <{{v.id}}>: <b><{{v.name}}></b></li>
+	        <li>{{v.id}}: <b>{{v.name}}</b></li>
 	      {% endif %}
 	    {%- endfor %}
 	  </ul>
