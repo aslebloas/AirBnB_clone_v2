@@ -9,7 +9,7 @@
 	  {% for key, value in states.items()|sort %}
 	  <LI>{{ value.id }}: <B>{{ value.name }}</B></LI>
 	  <ul>
-	    {% for k, v in cities.items()|sort(v.name) -%}
+	    {% for k, v in cities.items()|sort -%}
 	      {% if v.state_id == value.id %}
 	        <li>{{v.id}}: <b>{{v.name}}</b></li>
 	      {% endif %}
