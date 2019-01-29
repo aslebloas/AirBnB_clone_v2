@@ -24,8 +24,11 @@ def showStates():
 def showCities(id):
     states = storage.all('State')
     key = "{}.{}".format('State', id)
-    state = states[key]
     cities = storage.all('City')
+    if key in states:
+        state = states[key]
+    else:
+        state = None
     return render_template('9-states.html', state=state, cities=cities)
 
 
