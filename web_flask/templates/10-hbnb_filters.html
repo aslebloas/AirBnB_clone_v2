@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="styles/4-common.css">
-    <link rel="stylesheet" type="text/css" href="styles/3-header.css">
-    <link rel="stylesheet" type="text/css" href="styles/3-footer.css">
-    <link rel="stylesheet" type="text/css" href="styles/6-filters.css">
-    <link rel="icon" href="images/icon.png" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/4-common.css')"}}>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/3-header.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/3-footer.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/6-filters.css')}}">
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}" />
     <title>HBnB</title>
   </head>
   <body>
@@ -23,10 +23,10 @@
 	    <ul>
 	      {% for state in states.values()|sort(attribute='name') -%}
 	      <li>
-		<h2>{{state.name}}:</h2>
+		<h2>{{state.name}}</h2>
 		<ul>
 		  {% for city in cities.values()|sort(attribute='name') -%}
-		  {% if state.id == cities.state_id -%}
+		  {% if city.state_id == state.id -%}
 		  <li>{{city.name}}</li>
 		  {% endif -%}
 		  {% endfor -%}
